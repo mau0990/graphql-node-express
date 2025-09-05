@@ -19,6 +19,6 @@ export interface TodoRepository {
   getTodos(): Promise<Todo[]>;
   getTodo(id: number): Promise<Todo | null>;
   createTodo(input: CreateTodoInput): Promise<Todo>;
-  updateTodo(id: string, input: UpdateTodoInput): Promise<Todo>;
-  deleteTodo(id: string): Promise<boolean>;
+  updateTodo(id: number, input: UpdateTodoInput): Promise<Todo>;
+  deleteTodo(id: number): Promise<boolean>;
 }

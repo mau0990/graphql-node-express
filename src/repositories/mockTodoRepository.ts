@@ -1,11 +1,74 @@
-import { TodoRepository } from "./todoInterfaces";
+import {
+  CreateTodoInput,
+  Todo,
+  TodoRepository,
+  UpdateTodoInput,
+} from "./todoInterfaces";
 
-export class MockTodoRepository implements TodoRepository{
-    getTodos() => {
-        
+//This is a mock repository that simulates the connection to DB
+export class MockTodoRepository implements TodoRepository {
+  private todos: Todo[];
+  private nextId: number;
+
+  constructor() {
+    this.todos = [
+      {
+        id: 1,
+        title: "Aprender GraphQL",
+        completed: false,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: 2,
+        title: "Armar servicio con Express",
+        completed: true,
+        createdAt: new Date().toISOString(),
+      },
+    ];
+    this.nextId = 3;
+  }
+
+  private delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async getTodos() {
+    await this.delay(100);
+    return this.todos;
+  }
+
+  async getTodo(id: number) {
+    await this.delay(100);
+    return this.todos.find((x) => x.id === id) || null;
+  }
+
+  async createTodo(input: CreateTodoInput) {
+    await this.delay(100);
+    const todo: Todo = {
+      completed: input.completed ?? false,
+      createdAt: new Date().toISOString(),
+      id: this.nextId++,
+      title: input.title,
+    };
+    this.todos.push(todo);
+    return todo;
+  }
+
+  async updateTodo(id: number, input: UpdateTodoInput) {
+    await this.delay(100);
+    const index = this.todos.findIndex((x) => x.id === id);
+    if (index < 0) throw new Error(`Todo ${id} not found`);
+    const updated = { ...this.todos[index], ...input };
+    this.todos[index] = updated;
+    return updated;
+  }
+
+  async deleteTodo(id: number) {
+    await this.delay(100);
+    const exist = this.todos.some((x) => x.id === id);
+    if (exist) {
+      this.todos = this.todos.filter((x) => x.id !== id);
     }
-      getTodo(id: number): Promise<Todo | null>;
-      createTodo(input: CreateTodoInput): Promise<Todo>;
-      updateTodo(id: string, input: UpdateTodoInput): Promise<Todo>;
-      deleteTodo(id: string): Promise<boolean>;
+    return exist;
+  }
 }
