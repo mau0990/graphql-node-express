@@ -4,12 +4,14 @@ import {
   Todo,
   TodoRepository,
   UpdateTodoInput,
+  User,
 } from "./todoInterfaces";
 
 //This is a mock repository that simulates the connection to DB
 export class MockTodoRepository implements TodoRepository {
   private todos: Todo[];
   private nextId: number;
+  private users: User[];
 
   constructor() {
     this.todos = [
@@ -24,6 +26,14 @@ export class MockTodoRepository implements TodoRepository {
         title: "Armar servicio con Express",
         status: Status.PENDING,
         createdAt: new Date().toISOString(),
+      },
+    ];
+    this.users = [
+      {
+        id: "3333",
+        email: "test@test.com",
+        name: "Mauricio",
+        todos: this.todos,
       },
     ];
     this.nextId = 3;
@@ -41,6 +51,16 @@ export class MockTodoRepository implements TodoRepository {
   async getTodo(id: number) {
     await this.delay(100);
     return this.todos.find((x) => x.id === id) || null;
+  }
+
+  async getUsers() {
+    await this.delay(100);
+    return this.users;
+  }
+
+  async getUser(id: string) {
+    await this.delay(100);
+    return this.users.find((x) => id === x.id) || null;
   }
 
   async createTodo(input: CreateTodoInput) {

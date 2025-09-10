@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { createHandler } from "graphql-http/lib/use/express";
-import { schema, createRoot } from "./schema";
+import { buildSchema } from "./schema";
 import { MockTodoRepository } from "./repositories/mockTodoRepository";
 import { ruruHTML } from "ruru/server";
 
@@ -10,11 +10,13 @@ app.use(cors());
 
 const todoRepo = new MockTodoRepository();
 
+// Schema + resolvers combined
+const schema = buildSchema(todoRepo);
+
 app.all(
   "/graphql",
   createHandler({
     schema,
-    rootValue: createRoot(todoRepo),
     context: () => ({ todoRepo }),
   })
 );

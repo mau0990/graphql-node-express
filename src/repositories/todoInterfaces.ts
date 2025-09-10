@@ -10,6 +10,12 @@ export interface Todo {
   createdAt: string;
 }
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  todos: Todo[];
+}
 export interface CreateTodoInput {
   title: string;
   status: Status;
@@ -22,7 +28,9 @@ export interface UpdateTodoInput {
 
 export interface TodoRepository {
   getTodos(): Promise<Todo[]>;
+  getUsers(): Promise<User[]>;
   getTodo(id: number): Promise<Todo | null>;
+  getUser(id: string): Promise<User | null>;
   createTodo(input: CreateTodoInput): Promise<Todo>;
   updateTodo(id: number, input: UpdateTodoInput): Promise<Todo>;
   deleteTodo(id: number): Promise<boolean>;
