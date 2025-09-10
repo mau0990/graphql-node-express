@@ -1,18 +1,23 @@
+export enum Status {
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
+}
 export interface Todo {
   id: number;
   title: string;
-  completed: boolean;
+  status: Status;
   createdAt: string;
 }
 
 export interface CreateTodoInput {
   title: string;
-  completed?: boolean;
+  status: Status;
 }
 
 export interface UpdateTodoInput {
   title?: string;
-  completed?: boolean;
+  status: Status;
 }
 
 export interface TodoRepository {

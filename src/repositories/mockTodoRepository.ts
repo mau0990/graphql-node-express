@@ -1,5 +1,6 @@
 import {
   CreateTodoInput,
+  Status,
   Todo,
   TodoRepository,
   UpdateTodoInput,
@@ -15,13 +16,13 @@ export class MockTodoRepository implements TodoRepository {
       {
         id: 1,
         title: "Aprender GraphQL",
-        completed: false,
+        status: Status.PENDING,
         createdAt: new Date().toISOString(),
       },
       {
         id: 2,
         title: "Armar servicio con Express",
-        completed: true,
+        status: Status.PENDING,
         createdAt: new Date().toISOString(),
       },
     ];
@@ -45,7 +46,7 @@ export class MockTodoRepository implements TodoRepository {
   async createTodo(input: CreateTodoInput) {
     await this.delay(100);
     const todo: Todo = {
-      completed: input.completed ?? false,
+      status: input.status ?? false,
       createdAt: new Date().toISOString(),
       id: this.nextId++,
       title: input.title,
